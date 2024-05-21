@@ -1,0 +1,78 @@
+import tkinter as tk
+import sqlite3
+
+def submit_info():
+    name = entry_name.get()
+    cpf = entry_cpf.get()
+    state = selected_state.get()
+    employment_type = selected_employment_type.get()
+
+    label_result.config(text="Nome: " + name + "\nCPF: " + cpf + "\nEstado: " + state + "\nTipo de Vínculo: " + employment_type)
+
+    # Salvar as informações no banco de dados SQLite
+    conn = sqlite3.connect('dados.db')
+    c = conn.cursor()
+    c.execute("CREATE TABLE IF NOT EXISTS informacoes (nome TEXT, cpf TEXT, estado TEXT, tipo_vinculo TEXT)")
+    c.execute("INSERT INTO informacoes VALUES (?, ?, ?, ?)", (name, cpf, state, employment_type))
+    conn.commit()
+    conn.close()
+
+def salvar_no_banco():
+    submit_info()
+    label_result.config(text="Informações salvas no banco de dados.")
+
+# Função para ler os estados do arquivo config.txt
+def ler_estados():
+    with open("config.txt", "r") as file:
+        estados = file.read().strip().split(";")
+    return estados
+
+# Lista de estados a partir do arquivo config.txt
+estados = ler_estados()
+
+# Adicionando mais 5 estados brasileiros
+estados.extend(["Paraná", "Bahia", "Goiás", "Ceará", "Pernambuco"])
+
+# Tipos de vínculo
+tipos_vinculo = ["CLT", "MEI", "Sócio"]
+
+janela = tk.Tk()
+janela.title("Informe seus dados")
+janela.geometry("400x350")
+
+label_nome = tk.Label(janela, text="Nome:")
+label_nome.pack()
+
+entry_name = tk.Entry(janela)
+entry_name.pack()
+
+label_cpf = tk.Label(janela, text="CPF:")
+label_cpf.pack()
+
+entry_cpf = tk.Entry(janela)
+entry_cpf.pack()
+
+label_estado = tk.Label(janela, text="Estado:")
+label_estado.pack()
+
+# Lista suspensa (dropdown) para selecionar o estado
+selected_state = tk.StringVar(janela)
+selected_state.set(estados[0])  # Definir o valor padrão como o primeiro estado da lista
+
+state_dropdown = tk.OptionMenu(janela, selected_state, *estados)
+state_dropdown.pack()
+
+label_tipo_vinculo = tk.Label(janela, text="Tipo de Vínculo:")
+label_tipo_vinculo.pack()
+
+# Lista suspensa (dropdown) para selecionar o tipo de vínculo
+selected_employment_type = tk.StringVar(janela)
+selected_employment_type.set(tipos_vinculo[0])  # Definir o valor padrão como o primeiro tipo de vínculo da lista
+
+employment_type_dropdown = tk.OptionMenu(janela, selected_employment_type, *tipos_vinculo)
+employment_type_dropdown.pack()
+
+button_submit = tk.Button(janela, text="Enviar", command=submit_info)
+button_submit.pack()
+
+button_salvar = tk.Button(janela, text="Salvar no Banco de Dados
