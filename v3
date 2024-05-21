@@ -1,0 +1,46 @@
+import tkinter as tk
+
+def submit_info():
+    name = entry_name.get()
+    cpf = entry_cpf.get()
+    state = entry_state.get()
+
+    label_result.config(text="Nome: " + name + "\nCPF: " + cpf + "\nEstado: " + state)
+
+janela = tk.Tk()
+janela.title("Informe seus dados")
+janela.geometry("400x250")
+
+# Adicionar uma imagem de fundo
+background_image = tk.PhotoImage(file="18/05/2018-shrek.jpg")  # Altere para o caminho da sua imagem
+background_label = tk.Label(janela, image=background_image)
+background_label.place(relwidth=1, relheight=1)
+
+label_nome = tk.Label(janela, text="Nome:")
+label_nome.pack()
+
+entry_nome = tk.Entry(janela)
+entry_nome.pack()
+
+label_cpf = tk.Label(janela, text="CPF:")
+label_cpf.pack()
+
+entry_cpf = tk.Entry(janela)
+entry_cpf.pack()
+
+label_estado = tk.Label(janela, text="Estado:")
+label_estado.pack()
+
+entry_estado = tk.Entry(janela)
+entry_estado.pack()
+
+botao = tk.Button(janela, text="Enviar", command=submit_info)
+botao.pack()
+
+label_resultado = tk.Label(janela, text="")
+label_resultado.pack()
+
+instrucao = tk.Label(janela, text="Preencha os campos acima e clique em 'Enviar'.")
+instrucao.pack()
+
+janela.mainloop()
