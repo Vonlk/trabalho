@@ -1,0 +1,57 @@
+import tkinter as tk
+import sqlite3
+
+def submit_info():
+    name = entry_name.get()
+    cpf = entry_cpf.get()
+    state = entry_state.get()
+
+    label_result.config(text="Nome: " + name + "\nCPF: " + cpf + "\nEstado: " + state)
+
+    # Salvar as informações no banco de dados SQLite
+    conn = sqlite3.connect('dados.db')
+    c = conn.cursor()
+    c.execute("CREATE TABLE IF NOT EXISTS informacoes (nome TEXT, cpf TEXT, estado TEXT)")
+    c.execute("INSERT INTO informacoes VALUES (?, ?, ?)", (name, cpf, state))
+    conn.commit()
+    conn.close()
+
+def salvar_no_banco():
+    submit_info()
+    label_result.config(text="Informações salvas no banco de dados.")
+
+janela = tk.Tk()
+janela.title("Informe seus dados")
+janela.geometry("400x250")
+
+label_nome = tk.Label(janela, text="Nome:")
+label_nome.pack()
+
+entry_name = tk.Entry(janela)
+entry_name.pack()
+
+label_cpf = tk.Label(janela, text="CPF:")
+label_cpf.pack()
+
+entry_cpf = tk.Entry(janela)
+entry_cpf.pack()
+
+label_estado = tk.Label(janela, text="Estado:")
+label_estado.pack()
+
+entry_state = tk.Entry(janela)
+entry_state.pack()
+
+button_submit = tk.Button(janela, text="Enviar", command=submit_info)
+button_submit.pack()
+
+button_salvar = tk.Button(janela, text="Salvar no Banco de Dados", command=salvar_no_banco)
+button_salvar.pack()
+
+label_result = tk.Label(janela, text="")
+label_result.pack()
+
+instrucao = tk.Label(janela, text="Preencha os campos acima e clique em 'Enviar' ou 'Salvar no Banco de Dados'.")
+instrucao.pack()
+
+janela.mainloop()
