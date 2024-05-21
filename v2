@@ -1,0 +1,41 @@
+import tkinter as tk
+
+def submit_info():
+    name = entry_name.get()
+    cpf = entry_cpf.get()
+    state = entry_state.get()
+
+    label_result.config(text="Nome: " + name + "\nCPF: " + cpf + "\nEstado: " + state)
+
+window = tk.Tk()
+window.title("Informe seus dados")
+window.geometry("400x250")
+
+label_name = tk.Label(window, text="Nome:")
+label_name.pack()
+
+entry_name = tk.Entry(window)
+entry_name.pack()
+
+label_cpf = tk.Label(window, text="CPF:")
+label_cpf.pack()
+
+entry_cpf = tk.Entry(window)
+entry_cpf.pack()
+
+label_state = tk.Label(window, text="Estado:")
+label_state.pack()
+
+entry_state = tk.Entry(window)
+entry_state.pack()
+
+button = tk.Button(window, text="Enviar", command=submit_info)
+button.pack()
+
+label_result = tk.Label(window, text="")
+label_result.pack()
+
+instrucao = tk.Label(window, text="Preencha os campos acima e clique em 'Enviar'.")
+instrucao.pack()
+
+window.mainloop()
